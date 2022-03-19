@@ -25,6 +25,8 @@ export default class LoginScreen2 extends Component {
 		super(props);
 
 		this.state = { userName: "", passWord: "", listLog: [] };
+		// this.getCurrentDateString = this.getCurrentDateString.bind(this);
+		// this.handleClickMe = this.handleClickMe.bind(this);
 	}
 
 	handleClickMe = () => {
