@@ -85,11 +85,7 @@ const TodoScreen = () => {
 			setData(data);
 		}
 
-		setDescription("");
-		setTitle("");
-		setFromDate("");
-		setToDate("");
-		setId("");
+		updateModalData();
 		toggleModal();
 	};
 
@@ -99,15 +95,27 @@ const TodoScreen = () => {
 		// console.log(id);
 	};
 
+	const updateModalData = (selectedTask) => {
+		if (!selectedTask) {
+			setDescription("");
+			setTitle("");
+			setFromDate("");
+			setToDate("");
+			setId("");
+		} else {
+			setId(selectedTask?.id);
+			setDescription(selectedTask?.description);
+			setTitle(selectedTask?.title);
+			setFromDate(selectedTask?.from_date);
+			setToDate(selectedTask?.to_date);
+		}
+	};
+
 	const onUpdateTask = (id) => {
 		const selectedTask = data.find((item) => item.id === id);
-		setId(selectedTask?.id);
-		setDescription(selectedTask?.description);
-		setTitle(selectedTask?.title);
-		setFromDate(selectedTask?.from_date);
-		setToDate(selectedTask?.to_date);
+		updateModalData(selectedTask);
+
 		toggleModal();
-		// console.log(selectedTask);
 	};
 
 	return (
