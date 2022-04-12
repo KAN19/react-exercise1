@@ -16,6 +16,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 const TodoScreen = () => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
 
+	const [id, setId] = useState("");
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
 	const [fromDate, setFromDate] = useState("");
@@ -61,28 +62,70 @@ const TodoScreen = () => {
 	};
 
 	const handleOnSaveData = () => {
-		const newTaskItem = {
-			id: new Date(),
-			title: title,
-			description: description,
-			from_date: fromDate,
-			to_date: toDate,
-		};
-		setData([newTaskItem, ...data]);
+		if (!id) {
+			const newTaskItem = {
+				id: new Date(),
+				title: title,
+				description: description,
+				from_date: fromDate,
+				to_date: toDate,
+			};
+			setData([newTaskItem, ...data]);
+		} else {
+			let index = data.findIndex((item) => item.id === id);
+			const newTaskItem = {
+				id: id,
+				title: title,
+				description: description,
+				from_date: fromDate,
+				to_date: toDate,
+			};
+			data.splice(index, 1, newTaskItem);
+			console.log("update ne", data);
+			setData(data);
+		}
+
 		setDescription("");
 		setTitle("");
 		setFromDate("");
 		setToDate("");
+		setId("");
 		toggleModal();
 	};
 
+	const onCheckTask = (id) => {
+		const newDate = data.filter((item) => item?.id !== id);
+		setData(newDate);
+		// console.log(id);
+	};
+
+	const onUpdateTask = (id) => {
+		const selectedTask = data.find((item) => item.id === id);
+		setId(selectedTask?.id);
+		setDescription(selectedTask?.description);
+		setTitle(selectedTask?.title);
+		setFromDate(selectedTask?.from_date);
+		setToDate(selectedTask?.to_date);
+		toggleModal();
+		// console.log(selectedTask);
+	};
+
 	return (
-		<View style={tw`bg-red-200 w-full`}>
+		<View style={tw`w-full`}>
 			<Text style={tw`text-center mb-2`}>Todo screen</Text>
 			<View>
 				<FlatList
 					data={data}
-					renderItem={({ item }) => <TodoCard title={item?.title} />}
+					renderItem={({ item }) => (
+						<TodoCard
+							id={item?.id}
+							title={item?.title}
+							fromDate={item?.from_date}
+							toDate={item?.to_date}
+							checkTaskEvent={onCheckTask}
+							updateTaskEvent={onUpdateTask}
+						/>
+					)}
 					keyExtractor={(item) => item.id}
 				/>
 			</View>

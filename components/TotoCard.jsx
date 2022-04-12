@@ -2,33 +2,46 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React from "react";
 import tw from "twrnc";
 
-const TotoCard = ({ title, clickEvent }) => {
+const TotoCard = ({
+	id,
+	title,
+	checkTaskEvent,
+	updateTaskEvent,
+	fromDate,
+	toDate,
+}) => {
 	const handleCheckTask = () => {
-		if (clickEvent) {
-			clickEvent();
+		if (checkTaskEvent) {
+			checkTaskEvent(id);
+		}
+	};
+
+	const handleUpdateTask = () => {
+		if (updateTaskEvent) {
+			updateTaskEvent(id);
 		}
 	};
 
 	return (
 		<TouchableOpacity
-			onPress={() => console.log("card pressed")}
+			onPress={handleUpdateTask}
 			style={tw`border flex-row justify-between items-center px-4 py-2 mb-4`}
 		>
 			<View>
-				<Text>{title} </Text>
+				<Text style={tw`font-bold`}>{title} </Text>
 				<View>
 					<View style={tw`mr-2 flex-row`}>
 						<Text>From: </Text>
-						<Text>dd/mm/yyy </Text>
+						<Text>{fromDate} </Text>
 					</View>
 					<View style={tw`mr-2 flex-row`}>
 						<Text>To: </Text>
-						<Text>dd/mm/yyy </Text>
+						<Text>{toDate} </Text>
 					</View>
 				</View>
 			</View>
 			<TouchableOpacity onPress={handleCheckTask}>
-				<Text style={tw`h-4 w-4 border rounded-full`}></Text>
+				<Text style={tw`h-8 w-8 border rounded-full`}></Text>
 			</TouchableOpacity>
 		</TouchableOpacity>
 	);
